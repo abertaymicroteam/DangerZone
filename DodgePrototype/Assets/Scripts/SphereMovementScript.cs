@@ -4,24 +4,26 @@ using System.Collections;
 public class SphereMovementScript : MonoBehaviour 
 {
 	// Movement variables
-	float speed;
+	public float speed;
 	bool moving;
 	Vector3 direction;
 	public Vector3 defPos;
 	Rigidbody rigB;
+	float tempX;
+	float tempZ;
 
 	// Use this for initialization
 	void Start ()
     {
-		// Initialise position
-		defPos.Set(-5.0f, 2.0f, 0.0f);
-		transform.position.Set(defPos.x, defPos.y, defPos.z);
+
+		rigB = this.GetComponent<Rigidbody> ();
 
 		// Init movement variables
-		speed = 1.0f;
 		moving = true;
-		direction.Set(1.0f, 0.0f, 0.0f);
-		rigB = this.GetComponent<Rigidbody> ();
+
+		//calculate direction ( target position - current position)
+		direction.Set(-rigB.position.x, 0.0f,-rigB.position.z);            
+
 	}
 	
 	// Update is called once per frame
@@ -38,7 +40,7 @@ public class SphereMovementScript : MonoBehaviour
 		if (transform.position.x > 2)
 		{
 			// Reset to default position
-			rigB.MovePosition(defPos);
+			//Destroy(gameObject);
 		}
 	}
 }

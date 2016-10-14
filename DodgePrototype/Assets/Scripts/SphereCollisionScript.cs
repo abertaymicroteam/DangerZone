@@ -30,6 +30,7 @@ public class SphereCollisionScript : MonoBehaviour {
 		// If collided, change colour
 		if (collided) {
 			thisColour = Colour.Red;
+			Destroy (gameObject);
 		} 
 		else if (!collided) {
 			thisColour = Colour.Blue;

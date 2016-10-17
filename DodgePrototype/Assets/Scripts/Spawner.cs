@@ -19,6 +19,7 @@ public class Spawner : MonoBehaviour {
 	float tempZ;				  //used for calculation position on circle for z position
 	float rand;					  //shared angle
 	public float radius;		  //distance from player for spawning objects
+	public float yPos;			  //Fixed Y height
 
 	// Use this for initialization
 	void Start () {
@@ -47,7 +48,7 @@ public class Spawner : MonoBehaviour {
 			rand = Random.Range (0.0f, 2 * Mathf.PI);
 			tempX = 0 +  Mathf.Cos (rand) * radius;
 			tempZ = 0 +  Mathf.Sin (rand) * radius;
-			SpawnLocation.Set (tempX, 1, tempZ);
+			SpawnLocation.Set (tempX, yPos, tempZ);
 
 			Instantiate(Projectile, SpawnLocation, Quaternion.identity);
 			spawn = false;

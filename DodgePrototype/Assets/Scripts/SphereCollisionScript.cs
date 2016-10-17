@@ -6,10 +6,10 @@ public class SphereCollisionScript : MonoBehaviour {
 	//Change
 
 	// Collision variables
-	bool collided;
-	enum Colour {Blue, Red};
-	Colour thisColour;
-
+	bool collided;				//flag for collision
+	enum Colour {Blue, Red};	//colours for testing
+	Colour thisColour;			//^^
+	public PlayerHealth player;
 	// Renderer
 	public MeshRenderer rend;
 
@@ -22,20 +22,23 @@ public class SphereCollisionScript : MonoBehaviour {
 
 		// Get mesh renderer
 		rend = GetComponent<MeshRenderer>();
+
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		// If collided, change colour
+		// If collided, destroy object and deal damage to player
+		//if not set color to blue 
 		if (collided) {
-			thisColour = Colour.Red;
+			player.TakeDamage (12.5f);
 			Destroy (gameObject);
 		} 
 		else if (!collided) {
 			thisColour = Colour.Blue;
 		}
 
+		//rend selected color
 		switch (thisColour) 
 		{
 		case Colour.Blue:
@@ -45,15 +48,6 @@ public class SphereCollisionScript : MonoBehaviour {
 		case Colour.Red:
 			rend.material.SetColor ("_Color", Color.red);
 			break;
-		}
-
-		// Check if out of playable area on positive X side
-		if (transform.position.x > 2)
-		{
-			// Reset flag
-			collided = false;
-			// Reset to default position
-			transform.position.Set(-5.0f, 2.0f, 0.0f);
 		}
 	}
 

@@ -10,11 +10,21 @@ public class SphereMovementScript : MonoBehaviour
 	public Vector3 defPos;		//position to spawn
 	Rigidbody rigB;				//rigid body for object
 
+	public enum ProjectileType { direct, arced}; //definition of projectile type
+	public ProjectileType TypeDef;
+
+
+
+	/******** physics ********/
+	public float force, mass, acceleration, velI, velB, time;
+
+
 	// Use this for initialization
 	void Start ()
     {
 
 		rigB = this.GetComponent<Rigidbody> ();
+
 
 		// Init movement variables
 		moving = true;
@@ -33,8 +43,22 @@ public class SphereMovementScript : MonoBehaviour
 		// Move along vector
 		if (moving) 
 		{
-			Vector3 Vel = direction * speed;
-			rigB.velocity = Vel;
+			if (TypeDef == ProjectileType.direct) {
+				Vector3 Vel = direction * speed;
+				rigB.velocity = Vel;
+			}
+			if (TypeDef == ProjectileType.arced) {
+				
+				Vector3 Vel;
+				Vel.x = direction.x * speed;
+				Vel.y = direction.y + Mathf.Cos (time) * direction.x;
+				time += Time.deltaTime;
+				Vel.z = direction.z * speed;
+				//arced calculations
+	
+				//= direction * speed;
+				rigB.velocity = Vel;
+			}
 		}
 
 		// Check if out of playable and delete

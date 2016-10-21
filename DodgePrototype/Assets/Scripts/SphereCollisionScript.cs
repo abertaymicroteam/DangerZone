@@ -31,7 +31,6 @@ public class SphereCollisionScript : MonoBehaviour {
 		// If collided, destroy object and deal damage to player
 		//if not set color to blue 
 		if (collided) {
-			player.TakeDamage (12.5f);
 			Destroy (gameObject);
 		} 
 		else if (!collided) {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SphereMovementScript : MonoBehaviour 
+public class DirectProjectileMovementScript : MonoBehaviour 
 {
 	// Movement variables
 	public float speed;		//movement speed of ball

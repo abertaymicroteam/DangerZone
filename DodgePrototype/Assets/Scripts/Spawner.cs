@@ -44,11 +44,14 @@ public class Spawner : MonoBehaviour {
 
 			//calculate a random angle and use to find random spawn location on a circle around the player
 			//instantiate projectile prefab at this location
-			rand = Random.Range (0.0f, 2 * Mathf.PI);
-			tempX = 0 +  Mathf.Cos (rand) * radius;
-			tempZ = 0 +  Mathf.Sin (rand) * radius;
-			SpawnLocation.Set (tempX, 1, tempZ);
+			//rand = Random.Range (0.0f, 2 * Mathf.PI);
+			//tempX = 0 +  Mathf.Cos (rand) * radius;
+			//tempZ = 0 +  Mathf.Sin (rand) * radius;
+			//SpawnLocation.Set (tempX, 1, tempZ);
 
+			//Set the spawn location to the location of the object the script is attatched to
+			SpawnLocation.Set (gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
+			//Instantiate projectile 
 			Instantiate(Projectile, SpawnLocation, Quaternion.identity);
 			spawn = false;
 		}

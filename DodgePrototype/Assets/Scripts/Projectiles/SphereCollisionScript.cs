@@ -3,13 +3,6 @@ using System.Collections;
 
 public class SphereCollisionScript : MonoBehaviour {
 
-	//Change
-
-	// Collision variables
-	bool collided;
-	enum Colour {Blue, Red};
-	Colour thisColour;
-
 	// Renderer
 	public MeshRenderer rend;
 
@@ -25,7 +18,7 @@ public class SphereCollisionScript : MonoBehaviour {
 		
 	}
 
-	// Check for collision event
+	// Destroy on collision with player
 	void OnTriggerEnter(Collider collider)
 	{
 		if (collider.tag == "Player") 

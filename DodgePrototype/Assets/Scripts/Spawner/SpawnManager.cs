@@ -27,6 +27,7 @@ public class SpawnManager : MonoBehaviour {
 		if (SpawnDelay < 0) {
 
 			spawners [Random.Range(0,spawners.Length)].Spawn(ArcedProjectile);
+			//spawners [1].Spawn(ArcedProjectile); // for test purposes one spawner active
 			SpawnDelay = setTime;
 		}
 	}

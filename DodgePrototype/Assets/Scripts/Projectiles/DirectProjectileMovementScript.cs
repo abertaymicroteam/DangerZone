@@ -8,7 +8,13 @@ public class DirectProjectileMovementScript : MonoBehaviour
 	bool moving;			//if ball is moving or not
 	Vector3 direction;		//direction vector of projectile
 	Rigidbody rigB;			//rigidbody
+<<<<<<< HEAD
 	float lifeTime;
+=======
+	float lifeTime;			//time since the projectile was spawned
+
+	// Renderer
+>>>>>>> origin/Projectiles
 	public MeshRenderer rend;
 
 	// Use this for initialization
@@ -19,8 +25,11 @@ public class DirectProjectileMovementScript : MonoBehaviour
 		rigB = this.GetComponent<Rigidbody> ();
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		// Init movement variables
-		moving = true;
 		lifeTime = 0.0f;
+
+		// Get mesh renderer and colour direct projectiles blue
+		rend = GetComponent<MeshRenderer>();
+		rend.material.SetColor ("_Color", Color.blue);
 
 		//calculate direction ( target position - current position)
 		direction.Set(player.transform.position.x -rigB.position.x, player.transform.position.y -rigB.position.y,player.transform.position.z -rigB.position.z);            
@@ -31,12 +40,10 @@ public class DirectProjectileMovementScript : MonoBehaviour
 	void Update ()
     {
 		// Move positively in the X axis
-		if (moving) 
-		{
-			Vector3 Vel = direction * speed;
-			rigB.velocity = Vel;
-			lifeTime += Time.deltaTime;
-		}
+		Vector3 Vel = direction * speed;
+		rigB.velocity = Vel;
+		lifeTime += Time.deltaTime;
+
 
 		// Check if out of playable area on positive X side
 		if (lifeTime > 3)

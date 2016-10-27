@@ -8,13 +8,9 @@ public class DirectProjectileMovementScript : MonoBehaviour
 	bool moving;			//if ball is moving or not
 	Vector3 direction;		//direction vector of projectile
 	Rigidbody rigB;			//rigidbody
-<<<<<<< HEAD
-	float lifeTime;
-=======
 	float lifeTime;			//time since the projectile was spawned
 
 	// Renderer
->>>>>>> origin/Projectiles
 	public MeshRenderer rend;
 
 	// Use this for initialization

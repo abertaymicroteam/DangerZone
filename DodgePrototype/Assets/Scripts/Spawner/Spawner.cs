@@ -16,28 +16,16 @@ using System.Collections;
 /// 
 public class Spawner : MonoBehaviour {
 
-<<<<<<< HEAD
-	bool spawn;					  		//if an object is to be spawned 
-	Vector3 SpawnLocation;		 		//the spawn location
-	int SpawnCounter;					//number of projectiles spawned
-=======
-	public Vector3 SpawnLocation;  //the spawn location
-	public float holdup;
 
-	//Set Spawnlocation and instantiate projectile
-	public void Spawn(GameObject Projectile){
-		holdup = transform.position.y;
-		SpawnLocation.Set (gameObject.transform.position.x,  gameObject.transform.position.y , gameObject.transform.position.z);
-		Instantiate(Projectile, SpawnLocation, Quaternion.identity);
-	}
->>>>>>> origin/Projectiles
+	public Vector3 SpawnLocation;  
+
 
 	void Start () {
 
 	}
 		
 	void Update () {
-<<<<<<< HEAD
+
 
 	}
 
@@ -46,9 +34,7 @@ public class Spawner : MonoBehaviour {
 
 		SpawnLocation.Set (gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
 		Instantiate (Projectile, SpawnLocation, Quaternion.identity);
-=======
-	
->>>>>>> origin/Projectiles
+
 	}
 		
 }

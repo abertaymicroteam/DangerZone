@@ -9,10 +9,13 @@ public class DirectProjectileMovementScript : MonoBehaviour
 	Vector3 direction;		//direction vector of projectile
 	Rigidbody rigB;			//rigidbody
 	float lifeTime;
+	public MeshRenderer rend;
 
 	// Use this for initialization
 	void Start ()
     {
+		rend = GetComponent<MeshRenderer>();
+		rend.material.SetColor ("_Color", Color.blue);
 		rigB = this.GetComponent<Rigidbody> ();
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		// Init movement variables

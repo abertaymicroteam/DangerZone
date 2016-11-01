@@ -30,19 +30,22 @@ public class DirectProjectileMovementScript : MonoBehaviour
 		//calculate direction ( target position - current position)
 		direction.Set(player.transform.position.x -rigB.position.x, player.transform.position.y -rigB.position.y,player.transform.position.z -rigB.position.z);            
 		direction.Normalize ();
+
+		//add velocity to the projectile
+		Vector3 Vel = direction * speed;
+		rigB.velocity = Vel;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-		// Move positively in the X axis
-		Vector3 Vel = direction * speed;
-		rigB.velocity = Vel;
+		//timer on the projectiles life
+
 		lifeTime += Time.deltaTime;
 
 
 		// Check if out of playable area on positive X side
-		if (lifeTime > 3)
+		if (lifeTime > 6)
 		{
 			Destroy(gameObject);
 		}

@@ -6,7 +6,7 @@ public class SpawnManager : MonoBehaviour {
 	public GameObject DirectProjectile; // direct projectile prefab
 	public GameObject ArcedProjectile;  //arced  projectile prefab
 	public float SpawnDelay;		  //initial time between spawns
-	float setTime;				 	  //varied reset timer for spawn
+	public float setTime;				 	  //varied reset timer for spawn
 	Spawner[] spawners;				  //avaliable spawners
 
 	//set timer to max time seed random
@@ -14,7 +14,6 @@ public class SpawnManager : MonoBehaviour {
 	//place projectlie types onto array
 	void Start () {
 		
-		setTime = SpawnDelay;
 		Random.seed = (int)System.DateTime.Now.Ticks;
 		spawners = FindObjectsOfType (typeof(Spawner)) as Spawner[];
 
@@ -25,19 +24,19 @@ public class SpawnManager : MonoBehaviour {
 	void Update () {
 
 		SpawnDelay -= Time.deltaTime;
-		if (SpawnDelay < 0) {
+		if (SpawnDelay <= 0) {
 
-
+			spawners [Random.Range (0, spawners.Length)].Spawn ();
 			//select a random projectil at a random spawner
-			switch (Random.Range (0, 2)) {
-			case 0:
-				spawners [Random.Range (0, spawners.Length)].Spawn (ArcedProjectile);
-				break;
-			case 1:
-				spawners [Random.Range (0, spawners.Length)].Spawn (DirectProjectile);
-				break;
-
-			}
+//			switch (Random.Range (0, 2)) {
+//			case 0:
+//				spawners [Random.Range (0, spawners.Length)].Spawn (ArcedProjectile);
+//				break;
+//			case 1:
+//				spawners [Random.Range (0, spawners.Length)].Spawn (DirectProjectile);
+//				break;
+//
+//			}
 
 			SpawnDelay = setTime;
 		}

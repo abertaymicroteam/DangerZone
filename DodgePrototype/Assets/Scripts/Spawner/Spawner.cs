@@ -17,11 +17,15 @@ using System.Collections;
 public class Spawner : MonoBehaviour {
 
 
-	public Vector3 SpawnLocation;  
+	public Vector3 SpawnLocation; 
+	public GameObject Projectile1;
+	public GameObject Projectile2;
+	public float nextProjectile;
 
 
 	void Start () {
 
+		nextProjectile = Random.Range (0, 2);
 	}
 		
 	void Update () {
@@ -30,10 +34,23 @@ public class Spawner : MonoBehaviour {
 	}
 
 
-	public void Spawn(GameObject Projectile){
+	public void Spawn(){
 
 		SpawnLocation.Set (gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
-		Instantiate (Projectile, SpawnLocation, Quaternion.identity);
+
+
+
+		switch ((int)nextProjectile) {
+			case 0:
+				Instantiate (Projectile1, SpawnLocation, Quaternion.identity);
+				break;
+			case 1:
+				Instantiate (Projectile2, SpawnLocation, Quaternion.identity);
+				break;
+		
+		}
+
+		nextProjectile = Random.Range (0, 2);
 
 	}
 		

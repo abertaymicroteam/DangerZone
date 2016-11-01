@@ -34,7 +34,8 @@ public class ArcedProjectileMovement : MonoBehaviour {
 	public Vector3 direction;		//direction of ball normal vector
 	public Vector3 vel;
 	public Vector3 distance;
-
+	float timer;
+	public float speed;
 
 	//test
 	public float s,t,g,holder;
@@ -52,12 +53,27 @@ public class ArcedProjectileMovement : MonoBehaviour {
 		body = GetComponent<Rigidbody>();
 		target = (GameObject.FindWithTag("Player").transform);
 
+		g = 9.8f / (speed*speed);
+		timer = 0;
+
 		ThrowBall();
 	}
 
 	//if too low destroy
 	void Update (){
 
+		//calculate value for gravity per frame
+		timer = 1 / Time.deltaTime;
+	
+		Vector3 grav;
+		grav.x = 0;
+		grav.y = g / timer;
+		grav.z = 0;
+
+		//reduce t velocity by gravity per frame
+		body.velocity =body.velocity - grav;
+		
+		//if off map delete
 		if (transform.position.y < -10) {
 			Destroy (this.gameObject);
 		}
@@ -107,20 +123,22 @@ public class ArcedProjectileMovement : MonoBehaviour {
 		distance = target.position - transform.position;
 	
 		//set the x velocity to that distance (will get to position in 1 second divide by public variable for time if needing to be changed)
-		vel.x = distance.x;
-		vel.z = distance.z;
+		vel.x = distance.x / speed ;
+		vel.z = distance.z / speed ;
 
+		//variables
 		s = distance.y;
 		theta = 45;
 		sinTheta = Mathf.Sin (theta * Mathf.Deg2Rad) ;
 		t = 1;
-		g = -4.9f;
-		holder = s - g;
+
+		//equations
+		holder = s/speed + ( (0.5f*speed) * g);
 		holder = holder/sinTheta;
 		holder = holder*sinTheta;
 		vel.y = holder;
 
-
+		//add velocity
 		body.velocity = vel;
 
 

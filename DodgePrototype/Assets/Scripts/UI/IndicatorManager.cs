@@ -8,10 +8,15 @@ public class IndicatorManager : MonoBehaviour {
     public GameObject IndicatorPrefab;
     Canvas canvas;
 	Camera cam;
+	bool drawIndicator; // Decides whether to draw the indicator for each object
 
 	// List for storing active indicators
 	List<GameObject> Indicators = new List<GameObject> ();
 	int currIndicator = 0;
+
+	// Script containers
+	DirectProjectileMovementScript tempDirectScript;
+	ArcedProjectileMovement tempArcScript;
 
 	// Use this for initialization
 	void Start ()
@@ -20,6 +25,9 @@ public class IndicatorManager : MonoBehaviour {
         canvas = GameObject.FindObjectOfType(typeof(Canvas)) as Canvas;
 		// Get camera
 		cam = GameObject.Find("Camera (eye)").GetComponent<Camera>();
+
+		// Init containers
+		drawIndicator = true;
 	}
 	
 	// Update is called once per frame
@@ -36,11 +44,40 @@ public class IndicatorManager : MonoBehaviour {
             // Get position in screen space
             Vector3 screenPos = cam.WorldToScreenPoint(obj.transform.position);
 
-            // Check in screen space
-            if (screenPos.z < 0 ||
-                screenPos.y < 0 || screenPos.y > Screen.height ||
-                screenPos.x < 0 || screenPos.x > Screen.width)
-            { // Projectile is off screen
+			// Check if indicator should be drawn for this object
+			if (obj.GetComponent<DirectProjectileMovementScript> () != null) 
+			{
+				tempDirectScript = obj.GetComponent<DirectProjectileMovementScript> ();
+
+				if (tempDirectScript.showIndicator == true) 
+				{
+					drawIndicator = true;
+				} 
+				else 
+				{
+					drawIndicator = false;
+				}
+			} 
+			else 
+			{ // object is arced
+				tempArcScript = obj.GetComponent<ArcedProjectileMovement>();
+
+				if (tempArcScript.showIndicator == true) 
+				{
+					drawIndicator = true;
+				} 
+				else 
+				{
+					drawIndicator = false;
+				}
+			}
+
+            // Check if in screen space and that indicator should be shown
+            if ((screenPos.z < 0 ||
+                screenPos.y < 0 && screenPos.y > Screen.height ||
+				screenPos.x < 0 && screenPos.x > Screen.width)
+				&& (drawIndicator == true ))
+            { // Projectile is off screen and should be drawn
                 
                 // Get screen centre
                 Vector3 centre = new Vector3(Screen.width, Screen.height, 0) / 2;
@@ -63,7 +100,7 @@ public class IndicatorManager : MonoBehaviour {
                 float m = screenPos.y / screenPos.x;
 
                 // Bring screen bounds in by a tenth
-                Vector3 screenBounds = centre * 0.7f;
+                Vector3 screenBounds = centre * 0.5f;
 
                 // Which side of the screen is it off?                
                 if (screenPos.y > 0)
@@ -88,7 +125,7 @@ public class IndicatorManager : MonoBehaviour {
                 }
 
                 // We now have the position in screen space to instantiate our indicator
-				GameObject newIndicator = GetIndicator();
+				GameObject newIndicator = GetIndicator(); // 
 				newIndicator.transform.localPosition = screenPos;
 				newIndicator.GetComponent<RectTransform> ().rotation = Quaternion.Euler (0, 0, angle);
             }
@@ -110,7 +147,7 @@ public class IndicatorManager : MonoBehaviour {
 		else 
 		{ // create new
 			output = (GameObject) Instantiate(IndicatorPrefab) as GameObject;
-			output.transform.SetParent (canvas.transform);
+			output.transform.SetParent(canvas.transform, true);
 			Indicators.Add (output);
 		}
 

@@ -8,10 +8,13 @@ public class DirectProjectileMovementScript : MonoBehaviour
 	bool moving;			//if ball is moving or not
 	Vector3 direction;		//direction vector of projectile
 	Rigidbody rigB;			//rigidbody
-	float lifeTime;			//time since the projectile was spawned
+	Vector3 Vel;			// Final velocity
 
 	// Renderer
 	public MeshRenderer rend;
+
+	// Show indicator for this projectile?
+	public bool showIndicator;
 
 	// Use this for initialization
 	void Start ()
@@ -20,8 +23,6 @@ public class DirectProjectileMovementScript : MonoBehaviour
 		rend.material.SetColor ("_Color", Color.blue);
 		rigB = this.GetComponent<Rigidbody> ();
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
-		// Init movement variables
-		lifeTime = 0.0f;
 
 		// Get mesh renderer and colour direct projectiles blue
 		rend = GetComponent<MeshRenderer>();
@@ -32,22 +33,26 @@ public class DirectProjectileMovementScript : MonoBehaviour
 		direction.Normalize ();
 
 		//add velocity to the projectile
-		Vector3 Vel = direction * speed;
+		Vel = direction * speed;
 		rigB.velocity = Vel;
+
+		// Show projectile by default
+		showIndicator = true;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-		//timer on the projectiles life
 
-		lifeTime += Time.deltaTime;
+	}
 
-
-		// Check if out of playable area on positive X side
-		if (lifeTime > 6)
+	void OnCollisionEnter(Collision collision)
+	{
+		if (collision.collider.tag == "GameController") 
 		{
-			Destroy(gameObject);
-		}
+			//rigB.velocity = new Vector3 (0.0f, 0.0f, 0.0f);
+			rigB.AddForce(-Vel*4, ForceMode.VelocityChange);
+			showIndicator = false;
+		}	
 	}
 }

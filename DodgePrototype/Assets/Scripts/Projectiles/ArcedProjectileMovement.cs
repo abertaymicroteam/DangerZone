@@ -36,15 +36,20 @@ public class ArcedProjectileMovement : MonoBehaviour {
 	public Vector3 distance;
 	float timer;
 	public float speed;
+	private bool hit;
 
 	//test
 	public float s,t,g,holder;
 	// Renderer
 	public MeshRenderer rend;
 
+	// Show indicator for this projectile?
+	public bool showIndicator;
+
 	// Use this for initialization
 	void Start () {
 
+		hit = false;
 		// Get mesh renderer and colour arced projectiles red
 		rend = GetComponent<MeshRenderer>();
 		rend.material.SetColor ("_Color", Color.red);
@@ -57,6 +62,8 @@ public class ArcedProjectileMovement : MonoBehaviour {
 		timer = 0;
 
 		ThrowBall();
+
+		showIndicator = true;
 	}
 
 	//if too low destroy
@@ -71,52 +78,16 @@ public class ArcedProjectileMovement : MonoBehaviour {
 		grav.z = 0;
 
 		//reduce t velocity by gravity per frame
-		body.velocity =body.velocity - grav;
+		if (!hit) {
+			body.velocity = body.velocity - grav;
+		}
 		
 		//if off map delete
 		if (transform.position.y < -10) {
 			Destroy (this.gameObject);
 		}
 	}
-
-	/*****old******/
-	/*void ThrowBall (){
-
-		/*
-		// Calculate direction and distance of target and normalize the vector
-		direction = (target.position - transform.position);
-		direction.Normalize();
-
-		//calulate values for equiations 
-		// op = change in y
-		// adj = length of line along xz plane
-		// hyp = length of line straight from spawner to target
-		opp = target.transform.position.y - transform.position.y;
-		adj = Mathf.Sqrt(Mathf.Pow(body.transform.position.x - target.transform.position.x,2)+Mathf.Pow(body.transform.position.z - target.transform.position.z,2));
-		hyp = Mathf.Sqrt (Mathf.Pow (opp, 2) + Mathf.Pow (adj, 2));
-
-		//rotate so that the angle is 45 degrees from a line directly between spawner and player
-		rotation = (Mathf.Asin(opp/adj) * Mathf.Rad2Deg);
-		//keep at 45 for testing
-		theta = 45.0f;//+ rotation;
-		direction.y = (theta / 90.0f);
-
-		// Calculate velocity required to hit target (Range equation)
-		//Range assuming both objects y = 0
-		//float 
-		//velocity = Mathf.Sqrt(gravity * adj / (Mathf.Sin(theta ))); //previous code do no delete!!!
-		//Range equation taking change in y into account ( i have checked this has been entered correctly) 
-		velocity = (1/(Mathf.Cos(theta))) * Mathf.Sqrt(Mathf.Abs(0.5f*(gravity*Mathf.Pow(adj,2)) /  (hyp*Mathf.Tan(theta) - opp))); 
-
-		// Move projectile (Direction of throw * Velocity required to hit target)
-		//vel.y = direction*velocity;
-
-		//cos and sin 45 are equal multiply distance by x y and z velocities
-		//neds fixed
-		body.velocity = direction * (velocity );
-		*/
-	/*}*/
-
+		
 	void ThrowBall(){
 
 		//get distance
@@ -140,7 +111,16 @@ public class ArcedProjectileMovement : MonoBehaviour {
 
 		//add velocity
 		body.velocity = vel;
+	}
 
-
+	void OnCollisionEnter(Collision collision)
+	{
+		if (collision.collider.tag == "GameController") 
+		{
+//			body.velocity = new Vector3 (0.0f, 0.0f, 0.0f);
+			body.AddForce(-vel*2, ForceMode.VelocityChange);
+			showIndicator = false;
+			hit = true;
+		}	
 	}
 }

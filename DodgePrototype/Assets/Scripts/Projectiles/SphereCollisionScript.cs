@@ -24,4 +24,10 @@ public class SphereCollisionScript : MonoBehaviour {
 			Destroy (gameObject);
 		}
 	}
+
+	void OnTriggerExit(Collider collider){
+		if (collider.tag == "Arena") {
+			Destroy (gameObject);
+		}
+	}
 }

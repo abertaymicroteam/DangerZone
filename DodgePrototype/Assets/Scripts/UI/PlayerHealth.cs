@@ -8,19 +8,25 @@ public class PlayerHealth : MonoBehaviour {
 	public float playerHealth;
 
 	// Object containers
-	Text text;
+	Text txt;
 
 	// Use this for initialization
 	void Start () {
 		playerHealth = 100.0f;
 
-		text = GameObject.FindObjectOfType<Text>();
+		txt = GameObject.FindObjectOfType<Text>();
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		text.text = "Health";
+		txt.text = "Health: ";
+		txt.text += playerHealth.ToString ();
+
+		if (playerHealth <= 0.0f) 
+		{
+			txt.text = "Game Over";
+		}
 	}
 
 	//Check for collision between player and a projectile

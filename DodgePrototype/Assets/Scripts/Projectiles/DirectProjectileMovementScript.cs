@@ -10,6 +10,13 @@ public class DirectProjectileMovementScript : MonoBehaviour
 	Rigidbody rigB;			//rigidbody
 	Vector3 Vel;			// Final velocity
 
+	//rotation
+	Transform target;
+	public Vector3 targetDir;
+
+	//testing
+	public Vector3 newDir;
+
 	// Renderer
 	public MeshRenderer rend;
 
@@ -20,13 +27,9 @@ public class DirectProjectileMovementScript : MonoBehaviour
 	void Start ()
     {
 		rend = GetComponent<MeshRenderer>();
-		rend.material.SetColor ("_Color", Color.blue);
 		rigB = this.GetComponent<Rigidbody> ();
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-		// Get mesh renderer and colour direct projectiles blue
-		rend = GetComponent<MeshRenderer>();
-		rend.material.SetColor ("_Color", Color.blue);
+		target = player.transform;
 
 		//calculate direction ( target position - current position)
 		direction.Set(player.transform.position.x -rigB.position.x, player.transform.position.y -rigB.position.y,player.transform.position.z -rigB.position.z);            
@@ -38,21 +41,37 @@ public class DirectProjectileMovementScript : MonoBehaviour
 
 		// Show projectile by default
 		showIndicator = true;
+
+		//calculate the direction of the target and rotate towards it
+		targetDir = target.position - transform.position;
+		transform.rotation = Quaternion.LookRotation (-rigB.velocity);
+
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-
+		Debug.DrawRay (transform.position, -rigB.velocity, Color.red);
+		transform.rotation = Quaternion.LookRotation (-rigB.velocity);
 	}
 
 	void OnCollisionEnter(Collision collision)
 	{
+		// Stop particle emission
+		gameObject.GetComponent<ParticleSystem> ().enableEmission = false;
+
 		if (collision.collider.tag == "GameController") 
 		{
-			//rigB.velocity = new Vector3 (0.0f, 0.0f, 0.0f);
-			rigB.AddForce(-Vel*4, ForceMode.VelocityChange);
+			ControllerVelocity controller = collision.gameObject.GetComponent<ControllerVelocity> ();
+
+			newDir = collision.collider.transform.position - transform.position;
+			newDir.y = controller.GetVelocity ().y;
+			newDir.x = controller.GetVelocity ().x;
+			newDir.z = controller.GetVelocity ().z;
+
+			rigB.AddForce(newDir, ForceMode.VelocityChange);
+
 			showIndicator = false;
-		}	
+		}
 	}
 }

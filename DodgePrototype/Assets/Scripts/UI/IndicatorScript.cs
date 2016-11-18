@@ -17,6 +17,6 @@ public class IndicatorScript : MonoBehaviour {
 	void Update () 
 	{
 		// Lock rotation on x and y axes to 0
-		transf.rotation = Quaternion.Euler (lockRot, lockRot, transform.rotation.eulerAngles.z);
+		transf.localRotation = Quaternion.Euler (lockRot, lockRot, transform.rotation.eulerAngles.z);
 	}
 }

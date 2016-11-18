@@ -50,9 +50,6 @@ public class ArcedProjectileMovement : MonoBehaviour {
 	void Start () {
 
 		hit = false;
-		// Get mesh renderer and colour arced projectiles red
-		rend = GetComponent<MeshRenderer>();
-		rend.material.SetColor ("_Color", Color.red);
 
 		//get ridid body and players positions
 		body = GetComponent<Rigidbody>();
@@ -81,11 +78,10 @@ public class ArcedProjectileMovement : MonoBehaviour {
 		if (!hit) {
 			body.velocity = body.velocity - grav;
 		}
-		
-		//if off map delete
-		if (transform.position.y < -10) {
-			Destroy (this.gameObject);
-		}
+
+		//rotation
+		Debug.DrawRay (transform.position, -body.velocity, Color.red);
+		transform.rotation = Quaternion.LookRotation (-body.velocity);
 	}
 		
 	void ThrowBall(){
@@ -115,12 +111,27 @@ public class ArcedProjectileMovement : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision)
 	{
+		// Stop emmmissvnos partecle
+		gameObject.GetComponent<ParticleSystem> ().enableEmission = false;
+
 		if (collision.collider.tag == "GameController") 
 		{
-//			body.velocity = new Vector3 (0.0f, 0.0f, 0.0f);
-			body.AddForce(-vel*2, ForceMode.VelocityChange);
+			ControllerVelocity controller = collision.gameObject.GetComponent<ControllerVelocity> ();
+
+			Vector3 newDir = collision.collider.transform.position - transform.position;
+			newDir.y = controller.GetVelocity ().y;
+			newDir.x = controller.GetVelocity ().x;
+			newDir.z = controller.GetVelocity ().z;
+
+			body.AddForce(newDir, ForceMode.VelocityChange);
+
 			showIndicator = false;
-			hit = true;
-		}	
+		}
+//		if (collision.collider.tag == "GameController") 
+//		{
+//			Vector3 newDir = collision.collider.transform.position - transform.position;
+//			body.AddForce(-newDir*2, ForceMode.VelocityChange);
+//			showIndicator = false;
+//		}
 	}
 }

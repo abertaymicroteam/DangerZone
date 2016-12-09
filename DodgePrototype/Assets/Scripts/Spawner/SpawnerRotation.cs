@@ -17,3 +17,4 @@ public class SpawnerRotation : MonoBehaviour {
 		transform.RotateAround (transform.position, Vector3.up, rotation * Time.deltaTime);
 	}
 }
+// test editing a script to ensure changes can be made

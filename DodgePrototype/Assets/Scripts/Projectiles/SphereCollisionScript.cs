@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class SphereCollisionScript : MonoBehaviour {
@@ -25,3 +25,4 @@ public class SphereCollisionScript : MonoBehaviour {
 		}
 	}
 }
+//test comment
